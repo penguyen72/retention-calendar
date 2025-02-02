@@ -1,19 +1,12 @@
-import { AddGoalButton, DataType } from "@/components/add-goal-button"
+import { AddGoalButton } from "@/components/add-goal-button"
+import { EventMenu } from "@/components/event-menu"
 import { Calendar } from "@/components/ui/calendar"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
+import { DataType } from "@/lib/types"
 import { isSameDay } from "date-fns"
-import { Check, Ellipsis, Trash, X } from "lucide-react"
+import { Check, X } from "lucide-react"
 import { useState } from "react"
 import { useLocalStorage } from "usehooks-ts"
-import { Button } from "./components/ui/button"
-import { produce } from "immer"
-import { Separator } from "./components/ui/separator"
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -24,30 +17,6 @@ function App() {
   )
 
   const dataSource = database.filter((item) => isSameDay(item.date, date))
-
-  function deleteEvent(groupId: string) {
-    setDatabase((prevValue) => {
-      return prevValue.filter((item) => item.groupId !== groupId)
-    })
-  }
-
-  function markComplete(id: string) {
-    setDatabase((prevValue) => {
-      return produce(prevValue, (draft) => {
-        const index = draft.findIndex((item) => item.id === id)
-        draft[index].completed = true
-      })
-    })
-  }
-
-  function markIncomplete(id: string) {
-    setDatabase((prevValue) => {
-      return produce(prevValue, (draft) => {
-        const index = draft.findIndex((item) => item.id === id)
-        draft[index].completed = false
-      })
-    })
-  }
 
   return (
     <div className="flex min-h-screen">
@@ -83,35 +52,7 @@ function App() {
                           )}
                           {item.name}
                         </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button size="icon" variant="ghost" type="button">
-                              <Ellipsis />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className="w-56">
-                            <DropdownMenuItem
-                              onClick={() => markComplete(item.id)}
-                            >
-                              <Check className="text-green-500" />
-                              <span>Mark Complete</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => markIncomplete(item.id)}
-                            >
-                              <X className="text-red-600" />
-                              <span>Mark Incomplete</span>
-                            </DropdownMenuItem>
-                            <Separator />
-                            <DropdownMenuItem
-                              className="!text-destructive hover:!bg-destructive/10"
-                              onClick={() => deleteEvent(item.groupId)}
-                            >
-                              <Trash />
-                              <span>Delete</span>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <EventMenu item={item} />
                       </CardTitle>
                     </CardHeader>
                   </Card>
