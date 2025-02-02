@@ -125,7 +125,15 @@ export function AddGoalButton({ selectedDate, open, setOpen }: Props) {
     const repeatInterval = getValues("repeatInterval")
     if (!repeatInterval[index]) return
     const currentValue = repeatInterval[index].value
-    setValue(`repeatInterval.${index}.value`, currentValue + 1)
+    if (index === repeatInterval.length - 1) {
+      setValue(`repeatInterval.${index}.value`, currentValue + 1)
+    } else {
+      const nextValue = repeatInterval[index + 1].value
+      setValue(
+        `repeatInterval.${index}.value`,
+        Math.min(currentValue + 1, nextValue - 1)
+      )
+    }
   }
 
   return (
