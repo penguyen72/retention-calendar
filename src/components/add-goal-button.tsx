@@ -53,7 +53,7 @@ export interface DataType {
 }
 
 export function AddGoalButton({ selectedDate, open, setOpen }: Props) {
-  const [_database, setDatabase] = useLocalStorage<DataType[]>(
+  const [database, setDatabase] = useLocalStorage<DataType[]>(
     "retention-calender",
     []
   )

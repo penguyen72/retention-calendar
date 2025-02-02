@@ -8,11 +8,12 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { isSameDay } from "date-fns"
-import { Check, Ellipsis, Trash } from "lucide-react"
+import { Check, Ellipsis, Trash, X } from "lucide-react"
 import { useState } from "react"
 import { useLocalStorage } from "usehooks-ts"
 import { Button } from "./components/ui/button"
 import { produce } from "immer"
+import { Separator } from "./components/ui/separator"
 
 function App() {
   const [open, setOpen] = useState(false)
@@ -35,6 +36,15 @@ function App() {
       return produce(prevValue, (draft) => {
         const index = draft.findIndex((item) => item.id === id)
         draft[index].completed = true
+      })
+    })
+  }
+
+  function markIncomplete(id: string) {
+    setDatabase((prevValue) => {
+      return produce(prevValue, (draft) => {
+        const index = draft.findIndex((item) => item.id === id)
+        draft[index].completed = false
       })
     })
   }
@@ -66,8 +76,10 @@ function App() {
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          {item.completed && (
+                          {item.completed ? (
                             <Check className="text-green-500" />
+                          ) : (
+                            <X className="text-red-600" />
                           )}
                           {item.name}
                         </div>
@@ -81,9 +93,16 @@ function App() {
                             <DropdownMenuItem
                               onClick={() => markComplete(item.id)}
                             >
-                              <Check />
+                              <Check className="text-green-500" />
                               <span>Mark Complete</span>
                             </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => markIncomplete(item.id)}
+                            >
+                              <X className="text-red-600" />
+                              <span>Mark Incomplete</span>
+                            </DropdownMenuItem>
+                            <Separator />
                             <DropdownMenuItem
                               className="!text-destructive hover:!bg-destructive/10"
                               onClick={() => deleteEvent(item.groupId)}
