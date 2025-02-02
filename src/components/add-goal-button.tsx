@@ -46,8 +46,10 @@ interface Props {
 
 export interface DataType {
   id: string
+  groupId: string
   name: string
   date: Date
+  completed: boolean
 }
 
 export function AddGoalButton({ selectedDate, open, setOpen }: Props) {
@@ -77,19 +79,23 @@ export function AddGoalButton({ selectedDate, open, setOpen }: Props) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setDatabase((prevValue) => {
-      const id = uuidv4()
+      const groupId = uuidv4()
       let totalDays = 0
       prevValue.push({
-        id: id,
+        id: uuidv4(),
+        groupId: groupId,
         name: values.name,
-        date: selectedDate
+        date: selectedDate,
+        completed: false
       })
       values.repeatInterval.forEach((item) => {
         totalDays += item.value
         prevValue.push({
-          id: id,
+          id: uuidv4(),
+          groupId: groupId,
           name: values.name,
-          date: addDays(selectedDate, totalDays)
+          date: addDays(selectedDate, totalDays),
+          completed: false
         })
       })
       return prevValue
