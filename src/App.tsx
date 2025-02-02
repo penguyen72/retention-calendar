@@ -40,61 +40,65 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col h-full gap-4 p-6 lg:p-8">
-      <div>
-        <p className="text-3xl font-bold text-primary">Retention Calendar</p>
-        <p className="max-w-4xl italic">
-          Improve retention and recall by tracking learning progress and
-          reinforcing knowledge with spaced repetition and active recall,
-          following insights from the Ebbinghaus Forgetting Curve.
-        </p>
-      </div>
-      <div className="grid h-full grid-cols-1 gap-12 p-8 border rounded-md lg:overflow-y-hidden lg:grid-cols-2">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={(date) => date && setDate(date)}
-          className="m-auto scale-110 border rounded-md shadow lg:scale-125"
-        />
-        <div className="flex flex-col gap-4 lg:overflow-y-scroll">
-          <AddGoalButton selectedDate={date} open={open} setOpen={setOpen} />
-          <div className="flex flex-col gap-4">
-            {dataSource.map((item, index) => {
-              return (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {item.completed && <Check className="text-green-500" />}
-                        {item.name}
-                      </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button size="icon" variant="ghost" type="button">
-                            <Ellipsis />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                          <DropdownMenuItem
-                            onClick={() => markComplete(item.id)}
-                          >
-                            <Check />
-                            <span>Mark Complete</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="!text-destructive hover:!bg-destructive/10"
-                            onClick={() => deleteEvent(item.groupId)}
-                          >
-                            <Trash />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              )
-            })}
+    <div className="flex min-h-screen">
+      <div className="flex flex-col flex-1 gap-4 m-6 lg:m-8">
+        <div>
+          <p className="text-3xl font-bold text-primary">Retention Calendar</p>
+          <p className="max-w-4xl italic">
+            Improve retention and recall by tracking learning progress and
+            reinforcing knowledge with spaced repetition and active recall,
+            following insights from the Ebbinghaus Forgetting Curve.
+          </p>
+        </div>
+        <div className="grid flex-1 grid-cols-1 gap-12 p-8 border rounded-md lg:overflow-y-hidden lg:grid-cols-2">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => date && setDate(date)}
+            className="m-auto scale-110 border rounded-md shadow lg:scale-125"
+          />
+          <div className="flex flex-col gap-4 lg:overflow-y-scroll">
+            <AddGoalButton selectedDate={date} open={open} setOpen={setOpen} />
+            <div className="flex flex-col gap-4">
+              {dataSource.map((item, index) => {
+                return (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          {item.completed && (
+                            <Check className="text-green-500" />
+                          )}
+                          {item.name}
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="icon" variant="ghost" type="button">
+                              <Ellipsis />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-56">
+                            <DropdownMenuItem
+                              onClick={() => markComplete(item.id)}
+                            >
+                              <Check />
+                              <span>Mark Complete</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="!text-destructive hover:!bg-destructive/10"
+                              onClick={() => deleteEvent(item.groupId)}
+                            >
+                              <Trash />
+                              <span>Delete</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
