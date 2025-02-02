@@ -40,16 +40,23 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col h-full gap-4 p-8">
-      <p className="text-3xl font-bold text-primary">Retention Calendar</p>
-      <div className="grid h-full grid-cols-1 p-8 overflow-y-hidden border rounded-md lg:grid-cols-2">
+    <div className="flex flex-col h-full gap-4 p-6 lg:p-8">
+      <div>
+        <p className="text-3xl font-bold text-primary">Retention Calendar</p>
+        <p className="max-w-4xl italic">
+          Improve retention and recall by tracking learning progress and
+          reinforcing knowledge with spaced repetition and active recall,
+          following insights from the Ebbinghaus Forgetting Curve.
+        </p>
+      </div>
+      <div className="grid h-full grid-cols-1 gap-12 p-8 border rounded-md lg:overflow-y-hidden lg:grid-cols-2">
         <Calendar
           mode="single"
           selected={date}
           onSelect={(date) => date && setDate(date)}
-          className="m-auto scale-125 border rounded-md shadow"
+          className="m-auto scale-110 border rounded-md shadow lg:scale-125"
         />
-        <div className="flex flex-col gap-4 overflow-y-scroll">
+        <div className="flex flex-col gap-4 lg:overflow-y-scroll">
           <AddGoalButton selectedDate={date} open={open} setOpen={setOpen} />
           <div className="flex flex-col gap-4">
             {dataSource.map((item, index) => {
